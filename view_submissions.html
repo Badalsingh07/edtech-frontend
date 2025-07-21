@@ -18,7 +18,7 @@
     document.getElementById('submissionForm').addEventListener('submit', async function (e) {
       e.preventDefault();
       const assignmentId = document.getElementById("assignmentId").value;
-      const response = await fetch(`http://edtech-backend-cer2.onrender.com/assignments/${assignmentId}/submissions`);
+      const response = await fetch(`https://edtech-backend-cer2.onrender.com/assignments/${assignmentId}/submissions`);
       const data = await response.json();
 
       const results = document.getElementById("results");
