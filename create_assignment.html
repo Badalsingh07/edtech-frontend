@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Create Assignment</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h2>Create Assignment</h2>
+
+  <form id="assignmentForm">
+    <label for="title">Title:</label>
+    <input type="text" id="title" name="title" required />
+
+    <label for="description">Description:</label>
+    <textarea id="description" name="description" required></textarea>
+
+    <label for="teacherId">Teacher ID:</label>
+    <input type="number" id="teacherId" name="teacher_id" required />
+
+    <button type="submit">Create Assignment</button>
+  </form>
+
+  <p id="msg"></p>
+
+  <!-- 🏠 Home Button -->
+  <button onclick="window.location.href='dashboard.html'">Go to Home</button>
+
+  <script>
+    window.onload = () => {
+      const teacherId = localStorage.getItem("userId");
+      const role = localStorage.getItem("userRole");
+
+      if (role !== "teacher") {
+        alert("Access denied: only teachers can create assignments.");
+        window.location.href = "dashboard.html";
+      }
+
+      if (teacherId) {
+        document.getElementById("teacherId").value = teacherId;
+      }
+    };
+
+    document.getElementById("assignmentForm").addEventListener("submit", async function (e) {
+      e.preventDefault();
+
+      const title = document.getElementById("title").value;
+      const description = document.getElementById("description").value;
+      const teacher_id = document.getElementById("teacherId").value;
+
+      const response = await fetch("http://edtech-backend-cer2.onrender.com/assignments", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ title, description, teacher_id })
+      });
+
+      if (response.ok) {
+        document.getElementById("msg").innerText = "✅ Assignment created! Redirecting...";
+        setTimeout(() => window.location.href = "dashboard.html", 1500);
+      } else {
+        const data = await response.json();
+        document.getElementById("msg").innerText = data.detail || "❌ Error creating assignment.";
+      }
+    });
+  </script>
+</body>
+</html>

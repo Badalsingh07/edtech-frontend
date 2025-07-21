@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>View Assignments</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="light-bg">
+  <h2>Assignments Due</h2>
+  <p id="msg"></p>
+  <ul id="assignmentList"></ul>
+
+  <!-- Navigation Buttons -->
+  <button onclick="window.location.href='dashboard.html'">Go to Home</button>
+  <button id="studentViewBtn" onclick="location.href='view_assignments.html'">View Assignments</button>
+
+  <script>
+    window.onload = async () => {
+      const role = localStorage.getItem("userRole");
+
+      if (role !== "student") {
+        alert("Access denied. Only students can view assignments.");
+        window.location.href = "dashboard.html";
+        return;
+      }
+
+      try {
+        const response = await fetch("http://edtech-backend-cer2.onrender.com/assignments");
+        const data = await response.json();
+
+        const list = document.getElementById("assignmentList");
+        list.innerHTML = "";
+
+        if (data.length === 0) {
+          document.getElementById("msg").innerText = "📭 No assignments posted yet.";
+        } else {
+          data.forEach(a => {
+            const li = document.createElement("li");
+            li.innerHTML = `<strong>${a.title}</strong><br>${a.description}<br><em>Posted by Teacher ID: ${a.created_by}</em>`;
+            list.appendChild(li);
+          });
+        }
+      } catch (error) {
+        document.getElementById("msg").innerText = "❌ Failed to load assignments.";
+        console.error(error);
+      }
+    };
+  </script>
+</body>
+</html>

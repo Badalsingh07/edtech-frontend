@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>EdTech Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f5f5f5;
+      text-align: center;
+      padding: 40px;
+    }
+
+    h1 {
+      color: #2c3e50;
+    }
+
+    #userInfo {
+      font-size: 1.2em;
+      margin-bottom: 20px;
+    }
+
+    button {
+      padding: 10px 20px;
+      margin: 8px;
+      font-size: 1em;
+      border: none;
+      border-radius: 6px;
+      background: #3498db;
+      color: white;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background-color: #2980b9;
+    }
+  </style>
+</head>
+<body>
+  <h1>Welcome to EdTech Assignment Tracker</h1>
+
+  <div id="userInfo"></div>
+
+  <div id="navButtons">
+    <button id="signupBtn" onclick="location.href='signup.html'">Sign Up</button>
+    <button id="loginBtn" onclick="location.href='login.html'">Log In</button>
+    <button id="logoutBtn" onclick="logout()" style="display:none;">Log Out</button>
+
+    <!-- Teacher-only -->
+    <button id="createBtn" onclick="location.href='create_assignment.html'" style="display:none;">Create Assignment</button>
+    <button id="viewSubmissionsBtn" onclick="location.href='view_submissions.html'" style="display:none;">View Submissions</button>
+
+    <!-- Student-only -->
+    <button id="submitBtn" onclick="location.href='submit_assignment.html'" style="display:none;">Submit Assignment</button>
+    <button id="viewAssignmentsBtn" onclick="location.href='view_assignments.html'" style="display:none;">View Assignments</button>
+  </div>
+
+  <script>
+    function logout() {
+      localStorage.clear();
+      alert("You have been logged out.");
+      window.location.reload();
+    }
+
+    window.onload = () => {
+      const userId = localStorage.getItem("userId");
+      const role = localStorage.getItem("userRole");
+
+      const userInfo = document.getElementById("userInfo");
+      const signupBtn = document.getElementById("signupBtn");
+      const loginBtn = document.getElementById("loginBtn");
+      const logoutBtn = document.getElementById("logoutBtn");
+
+      const createBtn = document.getElementById("createBtn");
+      const viewSubmissionsBtn = document.getElementById("viewSubmissionsBtn");
+      const submitBtn = document.getElementById("submitBtn");
+      const viewAssignmentsBtn = document.getElementById("viewAssignmentsBtn");
+
+      if (userId && role) {
+        userInfo.innerText = `👤 Logged in as: ${role.toUpperCase()} (ID: ${userId})`;
+        signupBtn.style.display = "none";
+        loginBtn.style.display = "none";
+        logoutBtn.style.display = "inline-block";
+
+        if (role === "teacher") {
+          createBtn.style.display = "inline-block";
+          viewSubmissionsBtn.style.display = "inline-block";
+        } else if (role === "student") {
+          submitBtn.style.display = "inline-block";
+          viewAssignmentsBtn.style.display = "inline-block";
+        }
+      } else {
+        userInfo.innerText = `👤 You are not logged in.`;
+        signupBtn.style.display = "inline-block";
+        loginBtn.style.display = "inline-block";
+        logoutBtn.style.display = "none";
+      }
+    };
+  </script>
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Submit Assignment</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h2>Submit Assignment</h2>
+
+  <form id="submitForm">
+    <label for="assignmentId">Assignment ID:</label>
+    <input type="number" id="assignmentId" placeholder="e.g. 1" required />
+
+    <label for="fileUrl">File URL:</label>
+    <input type="text" id="fileUrl" placeholder="e.g. https://drive.com/file" required />
+
+    <button type="submit">Submit Assignment</button>
+  </form>
+
+  <p id="msg"></p>
+
+  <!-- 🏠 Home Button -->
+  <button onclick="window.location.href='dashboard.html'">Go to Home</button>
+
+  <script>
+    let studentId;
+
+    window.onload = () => {
+      const role = localStorage.getItem("userRole");
+      studentId = localStorage.getItem("userId");
+
+      if (role !== "student") {
+        alert("Only students can submit assignments.");
+        window.location.href = "dashboard.html";
+      }
+    };
+
+    document.getElementById("submitForm").addEventListener("submit", async function (e) {
+      e.preventDefault();
+
+      const assignmentId = document.getElementById("assignmentId").value;
+      const file_url = document.getElementById("fileUrl").value;
+
+      const response = await fetch(`http://edtech-backend-cer2.onrender.com/assignments/${assignmentId}/submit`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          student_id: studentId,
+          file_url: file_url
+        })
+      });
+
+      if (response.ok) {
+        document.getElementById("msg").innerText = "✅ Submitted successfully! Redirecting...";
+        setTimeout(() => window.location.href = "dashboard.html", 1500);
+      } else {
+        const error = await response.json();
+        document.getElementById("msg").innerText = error.detail || "❌ Submission failed.";
+      }
+    });
+  </script>
+</body>
+</html>

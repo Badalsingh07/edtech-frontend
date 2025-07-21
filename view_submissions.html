@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+  
+  <title>View Submissions</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h2>View Submissions</h2>
+  <form id="submissionForm">
+    <input type="number" id="assignmentId" placeholder="Assignment ID" required />
+    <button type="submit">Get Submissions</button>
+  </form>
+  <ul id="results"></ul>
+  <button onclick="location.href='dashboard.html'">Back to Dashboard</button>
+
+  <script>
+    document.getElementById('submissionForm').addEventListener('submit', async function (e) {
+      e.preventDefault();
+      const assignmentId = document.getElementById("assignmentId").value;
+      const response = await fetch(`http://edtech-backend-cer2.onrender.com/assignments/${assignmentId}/submissions`);
+      const data = await response.json();
+
+      const results = document.getElementById("results");
+      results.innerHTML = "";
+
+      if (data.length === 0) {
+        results.innerHTML = "<li>No submissions found.</li>";
+      } else {
+        data.forEach(sub => {
+          const item = document.createElement("li");
+          item.textContent = `Student ID: ${sub.student_id}, File: ${sub.file_url}`;
+          results.appendChild(item);
+        });
+      }
+    });
+  </script>
+</body>
+</html>
