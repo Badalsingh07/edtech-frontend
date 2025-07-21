@@ -23,7 +23,7 @@
   <p id="msg"></p>
 
   <!-- 🏠 Home Button -->
-  <button onclick="window.location.href='dashboard.html'">Go to Home</button>
+  <button onclick="window.location.href='index.html'">Go to Home</button>
 
   <script>
     window.onload = () => {
@@ -32,7 +32,7 @@
 
       if (role !== "teacher") {
         alert("Access denied: only teachers can create assignments.");
-        window.location.href = "dashboard.html";
+        window.location.href = "index.html";
       }
 
       if (teacherId) {
@@ -57,7 +57,7 @@
 
       if (response.ok) {
         document.getElementById("msg").innerText = "✅ Assignment created! Redirecting...";
-        setTimeout(() => window.location.href = "dashboard.html", 1500);
+        setTimeout(() => window.location.href = "index.html", 1500);
       } else {
         const data = await response.json();
         document.getElementById("msg").innerText = data.detail || "❌ Error creating assignment.";
