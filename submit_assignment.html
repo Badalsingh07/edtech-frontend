@@ -20,7 +20,7 @@
   <p id="msg"></p>
 
   <!-- 🏠 Home Button -->
-  <button onclick="window.location.href='dashboard.html'">Go to Home</button>
+  <button onclick="window.location.href='index.html'">Go to Home</button>
 
   <script>
     let studentId;
@@ -31,7 +31,7 @@
 
       if (role !== "student") {
         alert("Only students can submit assignments.");
-        window.location.href = "dashboard.html";
+        window.location.href = "index.html";
       }
     };
 
@@ -52,7 +52,7 @@
 
       if (response.ok) {
         document.getElementById("msg").innerText = "✅ Submitted successfully! Redirecting...";
-        setTimeout(() => window.location.href = "dashboard.html", 1500);
+        setTimeout(() => window.location.href = "index.html", 1500);
       } else {
         const error = await response.json();
         document.getElementById("msg").innerText = error.detail || "❌ Submission failed.";
