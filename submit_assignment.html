@@ -41,7 +41,7 @@
       const assignmentId = document.getElementById("assignmentId").value;
       const file_url = document.getElementById("fileUrl").value;
 
-      const response = await fetch(`http://edtech-backend-cer2.onrender.com/assignments/${assignmentId}/submit`, {
+      const response = await fetch(`https://edtech-backend-cer2.onrender.com/assignments/${assignmentId}/submit`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
